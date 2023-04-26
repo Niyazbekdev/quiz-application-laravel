@@ -37,7 +37,6 @@ protected $fillable = [
             set: fn(string $value) => Hash::make($value),
         );
     }
-
     protected function name(): Attribute
     {
         return Attribute::make(

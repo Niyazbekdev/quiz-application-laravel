@@ -4,26 +4,17 @@ namespace App\Services\Category;
 
 use App\Models\Category;
 use App\Services\BaseServices;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Validation\ValidationException;
 
 class IndexCategory extends BaseServices
 {
     public function rules(): array
     {
-        return [
-            'id',
-            'name',
-            'created_at',
-            'updated_at'
-        ];
+        return [];
     }
-
-    /**
-     * @throws ValidationException
-     */
-    public function execute(array $data): Category
+    public function execute(array $data): Collection
     {
-        $this->validate($data, $this->rules());
-        return Category::class->find($data);
+        return Category::all(['id', 'name', 'created_at', 'updated_at']);
     }
 }

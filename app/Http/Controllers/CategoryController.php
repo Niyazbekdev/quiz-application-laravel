@@ -8,15 +8,15 @@ use App\Services\Category\IndexCategory;
 use App\Services\Category\ShowCategory;
 use App\Services\Category\StoreCategory;
 use App\Services\Category\UpdateCategory;
-use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Validation\ValidationException;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
-        $category = app(IndexCategory::class)->execute($request->all());
+        $category = app(IndexCategory::class)->execute([]);
         return  CategoryResource::collection($category);
     }
     public function store(Request $request)
