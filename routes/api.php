@@ -9,7 +9,7 @@ Route::prefix('/users')
     ->controller(UserController::class)
     ->group(function (){
         Route::post('/register', 'register');
-        Route::get('/', 'getMe')->middleware('auth:sanctum');
+        Route::get('/', 'getMe')->middleware(['auth:sanctum','abilities:admin']);
         Route::post('/login', 'login');
     });
 

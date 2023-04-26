@@ -37,7 +37,7 @@ class UserController extends Controller
                     'id' => $user->id,
                     'name' => $user->name,
                     'role' => $role,
-                    'toke' => $token,
+                    'token' => $token,
                 ],
             ];
         }catch (ValidationException $exception){
