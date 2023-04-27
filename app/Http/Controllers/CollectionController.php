@@ -50,10 +50,10 @@ class CollectionController extends Controller
     public function show(string $id)
     {
         try {
-            [$collection, $questions] = app(ShowCollection::class)->execute([
+            [$collections, $questions] = app(ShowCollection::class)->execute([
                 'id'=> $id
             ]);
-            return (new CollectionWithQuestionResource($collection))->setQuestions($questions);
+            return (new CollectionWithQuestionResource($collections))->setQuestions($questions);
         }catch (ValidationException $exception){
             return $this->respondValidatorFailed($exception->validator);
         }catch (ModelNotFoundException){

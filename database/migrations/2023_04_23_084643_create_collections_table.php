@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained('users');
             $table->string('name', 255)->index();
             $table->longText('description');
-            $table->string('code', 32)->unique();
-            $table->enum('allowed_type', ['public', 'url', 'limited users']);
+            $table->uuid('code')->unique();
+            $table->enum('allowed_type', ['public', 'url', 'limitedUsers']);
             $table->timestamps();
         });
     }

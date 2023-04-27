@@ -17,7 +17,7 @@ class ShowCollection extends BaseServices
     public function rules(): array
     {
         return [
-            'id'=> 'required|exists:collection,id'
+            'id'=> 'required|exists:collections,id'
         ];
     }
 
