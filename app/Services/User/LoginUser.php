@@ -13,7 +13,7 @@ class LoginUser extends BaseServices
  {
      return [
          'phone'=> 'required',
-            'password'=> 'required',
+         'password'=> 'required',
      ];
  }
 

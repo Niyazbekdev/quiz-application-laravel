@@ -24,7 +24,7 @@ Route::middleware(['auth:sanctum', 'ability:user,admin'])->group(function (){
         });
 });
 Route::middleware(['auth:sanctum', 'ability:admin'])->group(function (){
-    Route::get('/getMe', [UserController::class, 'getMe']);
+    Route::get('/', [UserController::class, 'getMe']);
     Route::prefix('/categories')
         ->group(function (){
             Route::post('/', [CategoryController::class, 'store']);
