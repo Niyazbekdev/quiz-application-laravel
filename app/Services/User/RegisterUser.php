@@ -13,7 +13,7 @@ class RegisterUser extends BaseServices
         return [
             'name'=> 'required',
             'phone' => 'required|unique:users,phone',
-            'email' => 'nullable|unique:users,email',
+            'email' => 'required|unique:users,email',
             'password' => 'required',
         ];
     }
