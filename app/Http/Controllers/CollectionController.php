@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Collection\CollectionCollection;
+use App\Http\Resources\Collection\CollectionResource;
 use App\Http\Resources\Collection\CollectionWithQuestionResource;
+use App\Services\Collection\DeleteCollection;
 use App\Services\Collection\IndexCollection;
 use App\Services\Collection\ShowCollection;
 use App\Services\Collection\StoreCollection;
+use App\Services\Collection\UpdateCollection;
 use App\Traits\JsonRespondController;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -18,9 +21,7 @@ class CollectionController extends Controller
 {
     use JsonRespondController;
 
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request): JsonResponse|CollectionCollection
     {
         try {
@@ -31,9 +32,6 @@ class CollectionController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request): JsonResponse
     {
         try {
@@ -44,10 +42,7 @@ class CollectionController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(string $id): CollectionWithQuestionResource|JsonResponse
     {
         try {
             [$collections, $questions] = app(ShowCollection::class)->execute([
@@ -62,22 +57,41 @@ class CollectionController extends Controller
             $this->setHTTPStatusCode($exception->getCode());
             return $this->respondWithError($exception->getMessage());
         }
-
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): JsonResponse
     {
-        //
+        try {
+            $collections = app(UpdateCollection::class)->execute([
+                'id'=> $id,
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
+            return $this->respondSuccess();
+        }catch (ValidationException $exception){
+            return $this->respondValidatorFailed($exception->validator);
+        }catch (ModelNotFoundException){
+            return $this->respondNotFound();
+        }catch (Exception $exception){
+            $this->setHTTPStatusCode($exception->getCode());
+            return $this->respondWithError($exception->getMessage());
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
-        //
+        try {
+            [$collections, $questions] = app(DeleteCollection::class)->execute([
+                'id' => $id,
+            ]);
+            return $this->respondSuccess();
+        }catch (ValidationException $exception){
+            return $this->respondValidatorFailed($exception->validator);
+        }catch (ModelNotFoundException){
+            return $this->respondNotFound();
+        }catch (Exception $exception){
+            $this->setHTTPStatusCode($exception->getCode());
+            return $this->respondWithError($exception->getMessage());
+        }
     }
 }

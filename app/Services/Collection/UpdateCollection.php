@@ -11,21 +11,23 @@ class UpdateCollection extends BaseServices
     public function rules(): array
     {
         return [
-            'id' => 'required|exists,collections,id',
+            'id' => 'required|exists:collections,id',
             'name' => 'required',
-            'description' => 'required'
+            'description' => 'required',
         ];
     }
 
     /**
      * @throws ValidationException
      */
-    public function execute(array $data){
+    public function execute(array $data): Collection
+    {
         $this->validate($data);
-        $collections = Collection::findOrFail($data['id']);
+        $collections = Collection::find($data['id']);
         $collections->update([
             'name' => $data['name'],
             'description' => $data['description'],
         ]);
+        return $collections;
     }
 }
