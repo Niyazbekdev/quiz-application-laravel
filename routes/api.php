@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,7 @@ Route::middleware(['guest'])->group(function (){
    Route::post('/signUp', [UserController::class, 'register']);
    Route::post('/signIn', [UserController::class, 'login']);
 });
+Route::get('/random-code', TestController::class);
 
 Route::middleware(['auth:sanctum', 'ability:user,admin'])->group(function (){
     Route::prefix('/categories')
