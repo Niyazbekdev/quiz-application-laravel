@@ -10,7 +10,8 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         try {
             [$user, $token] = app(RegisterUser::class)->execute($request->all());
             return response([

@@ -81,7 +81,7 @@ class CollectionController extends Controller
     public function destroy(string $id): JsonResponse
     {
         try {
-            [$collection, $questions] = app(DeleteCollection::class)->execute([
+            app(DeleteCollection::class)->execute([
                 'id' => $id,
             ]);
             return $this->respondSuccess();

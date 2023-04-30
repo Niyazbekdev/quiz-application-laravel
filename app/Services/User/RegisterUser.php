@@ -2,8 +2,12 @@
 
 namespace App\Services\User;
 
+use App\Mail\WelcomeMail;
 use App\Models\User;
+use App\Models\Verification;
 use App\Services\BaseServices;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
 class RegisterUser extends BaseServices

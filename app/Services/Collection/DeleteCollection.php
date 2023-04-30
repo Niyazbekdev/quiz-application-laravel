@@ -2,6 +2,7 @@
 
 namespace App\Services\Collection;
 
+use App\Models\Answer;
 use App\Models\Collection;
 use App\Models\Question;
 use App\Services\BaseServices;
@@ -19,12 +20,19 @@ class DeleteCollection extends BaseServices
     /**
      * @throws ValidationException
      */
-    public function execute(array $data): array
+    public function execute(array $data): bool
     {
         $this->validate($data, $this->rules());
         $collection = Collection::find($data['id']);
-        $questions = Question::with('collection_id', $collection)->delete();
+        $questions = Question::where('collection_id', $data['id'])->get();
+        foreach ($questions as $question){
+            $answers = Answer::where('question_id', $question['id'])->get();
+            foreach ($answers as $answer){
+                Answer::find($answer['id'])->delete();
+            }
+            Question::find($question['id'])->delete();
+        }
         $collection->delete();
-        return [$collection, $questions];
+        return true;
     }
 }

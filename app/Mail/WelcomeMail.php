@@ -29,7 +29,7 @@ class WelcomeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Xosh keldin\'',
+            subject: 'Welcome to Quiz-application!\'',
         );
     }
 
