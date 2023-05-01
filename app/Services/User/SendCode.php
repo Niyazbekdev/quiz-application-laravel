@@ -24,13 +24,12 @@ class SendCode extends BaseServices
      */
     public function execute(array $data)
     {
-
         $code = rand(111111, 999999);
         $this->validate($data);
         $user = Auth::user();
         $send = Verification::where('user_id', $user['id'])->first();
         if (!$send) {
-            $newCode = Verification::create([
+            Verification::create([
                 'user_id' => $user['id'],
                 'code' => $code,
                 'status' => "send code",
@@ -48,7 +47,7 @@ class SendCode extends BaseServices
         }
         Mail::to($user['email'])->send(
             new WelcomeMail([
-                'name' => 'Hi dear ' . $user['name'] . ' your code: ',
+                'name' => 'Qalaysan short' . $user['name'] . ' inishek your code: ',
                 'code' => $code,
             ])
         );
