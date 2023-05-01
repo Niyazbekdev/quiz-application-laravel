@@ -11,10 +11,9 @@ Route::middleware(['guest'])->group(function (){
    Route::post('/signUp', [UserController::class, 'register']);
    Route::post('/signIn', [UserController::class, 'login']);
 });
-
 Route::middleware(['auth:sanctum', 'ability:user,admin'])->group(function (){
-    Route::get('/random-code', [TestController::class, 'sendCode']);
-    Route::post('/random-code/{id}', [TestController::class, 'identification']);
+    Route::get('/send-code', [TestController::class, 'sendCode']);
+    Route::post('/verify-code', [TestController::class, 'identification']);
     Route::prefix('/categories')
         ->group(function (){
             Route::get('/', [CategoryController::class, 'index']);

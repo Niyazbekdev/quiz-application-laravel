@@ -14,11 +14,9 @@ class VerifyEmail extends BaseServices
     public function rules(): array
     {
         return [
-            'id' => 'exists:verifications,id',
             'code' => 'required',
         ];
     }
-
     /**
      * @throws ValidationException
      */
@@ -35,7 +33,7 @@ class VerifyEmail extends BaseServices
                 'your code is active',
             ]);
         } else {
-            $createTime = $send['created_at'];
+            $createTime = $send['updated_at'];
             if($nowTime > $createTime){
                 $send->update([
                     'status' => 'time over',

@@ -21,15 +21,16 @@ class TestController extends Controller
 {
     public function sendCode(Request $request)
     {
-       return app(SendCode::class)->execute($request->all());
+        try {
+            return app(SendCode::class)->execute($request->all());
+        }catch (ValidationException $exception){
+            return $exception->validator->errors()->all();
+        }
     }
-    public function identification(Request $request, string $id)
+    public function identification(Request $request)
     {
         try {
-            return app(VerifyEmail::class)->execute([
-            'id' => $id,
-            'code' => $request->code,
-        ]);
+            return app(VerifyEmail::class)->execute($request->all());
         }catch (ValidationException $exception){
             return $exception->validator->errors()->all();
         }

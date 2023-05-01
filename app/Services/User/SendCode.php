@@ -12,20 +12,12 @@ use function Termwind\renderUsing;
 
 class SendCode extends BaseServices
 {
-    public function rules(): array
-    {
-        return [
-            'id' => 'exists:verifications,id',
-        ];
-    }
-
     /**
      * @throws ValidationException
      */
-    public function execute(array $data)
+    public function execute()
     {
         $code = rand(111111, 999999);
-        $this->validate($data);
         $user = Auth::user();
         $send = Verification::where('user_id', $user['id'])->first();
         if (!$send) {
@@ -47,7 +39,7 @@ class SendCode extends BaseServices
         }
         Mail::to($user['email'])->send(
             new WelcomeMail([
-                'name' => 'Qalaysan short' . $user['name'] . ' inishek your code: ',
+                'name' => 'Welcome to ' . $user['name'] . ' your code: ',
                 'code' => $code,
             ])
         );
