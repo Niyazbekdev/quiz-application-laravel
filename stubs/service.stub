@@ -2,14 +2,11 @@
 
 namespace {{ namespace }};
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use App\Services\BaseServices;
+use Illuminate\Validation\ValidationException;
 
-class {{ class }} extends BaseService
+class {{ class }} extends BaseServices
 {
-    /**
-     * Run the database seeds.
-     */
     public function rules(): array
     {
         return [];
