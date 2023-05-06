@@ -8,12 +8,16 @@ use App\Services\Category\IndexCategory;
 use App\Services\Category\ShowCategory;
 use App\Services\Category\StoreCategory;
 use App\Services\Category\UpdateCategory;
+use App\Traits\JsonRespondController;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Validation\ValidationException;
 
 class CategoryController extends Controller
 {
+    use JsonRespondController;
     public function index(Request $request): AnonymousResourceCollection
     {
         $category = app(IndexCategory::class)->execute([]);
@@ -28,7 +32,7 @@ class CategoryController extends Controller
             return $exception->validator->errors()->all();
         }
     }
-    public function show(string $id)
+    public function show( string $id)
     {
         try {
             $category = app(ShowCategory::class)->execute([

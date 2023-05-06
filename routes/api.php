@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\QuestionController;
@@ -30,6 +31,11 @@ Route::middleware(['auth:sanctum', 'ability:user,admin'])->group(function (){
             Route::get('/', [QuestionController::class, 'index']);
             Route::get('/{id}', [QuestionController::class, 'show']);
         });
+    Route::prefix('/answers')
+        ->group(function (){
+            Route::get('/', [AnswerController::class, 'index']);
+            Route::get('/{id}', [AnswerController::class, 'show']);
+        });
 });
 Route::middleware(['auth:sanctum', 'ability:admin'])->group(function (){
     Route::get('/', [UserController::class, 'getMe']);
@@ -50,5 +56,11 @@ Route::middleware(['auth:sanctum', 'ability:admin'])->group(function (){
             Route::post('/', [QuestionController::class, 'store']);
             Route::put('/{id}', [QuestionController::class, 'update']);
             Route::delete('/{id}', [QuestionController::class, 'destroy']);
+        });
+    Route::prefix('/answers')
+        ->group(function (){
+            Route::post('/', [AnswerController::class, 'store']);
+            Route::put('/{id}', [AnswerController::class, 'update']);
+            Route::delete('/{id}', [AnswerController::class, 'destroy']);
         });
 });

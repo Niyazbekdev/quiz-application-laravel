@@ -4,6 +4,7 @@ namespace App\Services\Category;
 
 use App\Models\Category;
 use App\Services\BaseServices;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 
 class ShowCategory extends BaseServices
@@ -14,13 +15,20 @@ class ShowCategory extends BaseServices
             'name',
         ];
     }
-
     /**
      * @throws ValidationException
+     * @throws ModelNotFoundException
      */
-    public function execute(array $data): Category
+    public function execute(array $data)
     {
         $this->validate($data, $this->rules());
-        return Category::where('id', $data['id'])->withTrashed()->first();
+        $category = Category::where('id', $data['id'])->withTrashed()->first();
+        if(!$category){
+            return response([
+                'message' => 'category not found',
+            ]);
+        }else{
+            return $category;
+        }
     }
 }
