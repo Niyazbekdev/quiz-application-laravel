@@ -2,52 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Collection\CollectionCollection;
-use App\Http\Resources\Collection\CollectionResource;
-use App\Http\Resources\Collection\CollectionWithQuestionResource;
-use App\Services\Collection\DeleteCollection;
-use App\Services\Collection\IndexCollection;
-use App\Services\Collection\ShowCollection;
-use App\Services\Collection\StoreCollection;
-use App\Services\Collection\UpdateCollection;
-use App\Traits\JsonRespondController;
+use App\Http\Resources\Question\QuestionResource;
+use App\Http\Resources\Question\QuestionWithAnswers;
+use App\Services\Question\DeleteQuestion;
+use App\Services\Question\IndexQuestion;
+use App\Services\Question\ShowQuestion;
+use App\Services\Question\StoreQuestion;
+use App\Services\Question\UpdateQuestion;
 use Exception;
+use App\Traits\JsonRespondController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class CollectionController extends Controller
+class QuestionController extends Controller
 {
     use JsonRespondController;
 
-    public function index(Request $request): JsonResponse|CollectionCollection
+    public function index(Request $request)
     {
         try {
-            $collections = app(IndexCollection::class)->execute($request->all());
-            return new CollectionCollection($collections);
-        } catch (ValidationException $exception) {
-            return $this->respondValidatorFailed($exception->validator);
+            return app(IndexQuestion::class)->execute($request->all());
+        }catch (ValidationException $exception){
+             return $this->respondValidatorFailed($exception->validator);
         }
     }
 
-    public function store(Request $request): JsonResponse
-    {
+    public function store(Request $request){
         try {
-            app(StoreCollection::class)->execute($request->all());
+            app(StoreQuestion::class)->execute($request->all());
             return $this->respondSuccess();
-        } catch (ValidationException $exception) {
+        }catch (ValidationException $exception) {
             return $this->respondValidatorFailed($exception->validator);
         }
     }
 
-    public function show(string $id): CollectionWithQuestionResource|JsonResponse
+    public function show(Request $request, string $id)
     {
         try {
-            [$collections, $questions] = app(ShowCollection::class)->execute([
-                'id'=> $id
+            [$question, $answers] =  app(ShowQuestion::class)->execute([
+                'id' => $id,
             ]);
-            return (new CollectionWithQuestionResource($collections))->setQuestions($questions);
+            return (new QuestionWithAnswers($question))->setAnswers($answers);
         }catch (ValidationException $exception){
             return $this->respondValidatorFailed($exception->validator);
         }catch (ModelNotFoundException){
@@ -58,13 +54,12 @@ class CollectionController extends Controller
         }
     }
 
-    public function update(Request $request, string $id): JsonResponse
+    public function update(Request $request, string $id)
     {
         try {
-            $collections = app(UpdateCollection::class)->execute([
-                'id'=> $id,
-                'name' => $request->name,
-                'description' => $request->description,
+            app(UpdateQuestion::class)->execute([
+                'id' => $id,
+                'question' => $request->question,
             ]);
             return $this->respondSuccess();
         }catch (ValidationException $exception){
@@ -77,10 +72,10 @@ class CollectionController extends Controller
         }
     }
 
-    public function destroy(string $id): JsonResponse
+    public function destroy(Request $request, string $id)
     {
         try {
-            app(DeleteCollection::class)->execute([
+            app(DeleteQuestion::class)->execute([
                 'id' => $id,
             ]);
             return $this->respondSuccess();

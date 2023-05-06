@@ -12,6 +12,10 @@ class {{ class }} extends BaseServices
         return [];
     }
 
+    /**
+     * @throws ValidationException
+     */
+
    public function execute(array $data): array
    {
        $this->validate($data);
