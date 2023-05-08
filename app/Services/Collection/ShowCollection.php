@@ -28,8 +28,7 @@ class ShowCollection extends BaseServices
     public function execute(array $data): array
     {
         $this->validate($data);
-        $collection = Collection::findOrFail($data['id']);
-        $questions = $collection->questions;
-        return [$collection, $questions];
+        $collection = Collection::with(['allowedUsers', 'questions', 'user'])->findOrFail($data['id']);
+        return [$collection];
     }
 }

@@ -40,7 +40,12 @@ class CategoryController extends Controller
             ]);
             return new CategoryResource($category);
         }catch (ValidationException $exception){
-            return $exception->validator->errors()->all();
+            return $this->respondValidatorFailed($exception->validator);
+        }catch (ModelNotFoundException){
+            return $this->respondNotFound();
+        }catch (Exception $exception){
+            $this->setHTTPStatusCode($exception->getCode());
+            return $this->respondWithError($exception->getMessage());
         }
     }
     public function update(Request $request, string $id)

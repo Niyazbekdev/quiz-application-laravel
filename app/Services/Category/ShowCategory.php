@@ -12,6 +12,7 @@ class ShowCategory extends BaseServices
     public function rules(): array
     {
         return [
+            'id' => 'exists:categories,id',
             'name',
         ];
     }

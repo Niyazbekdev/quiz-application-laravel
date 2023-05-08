@@ -6,6 +6,7 @@ use App\Mail\WelcomeMail;
 use App\Models\Verification;
 use App\Services\BaseServices;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use function Termwind\renderUsing;
@@ -23,7 +24,7 @@ class SendCode extends BaseServices
         if (!$send) {
             Verification::create([
                 'user_id' => $user['id'],
-                'code' => $code,
+                'code' => Hash::make($code),
                 'status' => "send code",
             ]);
         } else {
@@ -31,9 +32,10 @@ class SendCode extends BaseServices
                 return response([
                     'message' => 'you premium account'
                 ]);
-            } else {
+            } else  {
                 $send->update([
-                    'code' => $code,
+                    'code' => Hash::make($code),
+                    'status' => "send code",
                 ]);
             }
         }

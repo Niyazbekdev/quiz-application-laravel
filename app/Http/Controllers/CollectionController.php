@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Collection\CollectionCollection;
 use App\Http\Resources\Collection\CollectionResource;
-use App\Http\Resources\Collection\CollectionWithQuestionResource;
 use App\Services\Collection\DeleteCollection;
 use App\Services\Collection\IndexCollection;
 use App\Services\Collection\ShowCollection;
@@ -41,13 +40,13 @@ class CollectionController extends Controller
         }
     }
 
-    public function show(string $id): CollectionWithQuestionResource|JsonResponse
+    public function show(string $id)
     {
         try {
-            [$collections, $questions] = app(ShowCollection::class)->execute([
+            [$collections] = app(ShowCollection::class)->execute([
                 'id'=> $id
             ]);
-            return (new CollectionWithQuestionResource($collections))->setQuestions($questions);
+            return new CollectionResource($collections);
         }catch (ValidationException $exception){
             return $this->respondValidatorFailed($exception->validator);
         }catch (ModelNotFoundException){

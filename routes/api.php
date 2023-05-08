@@ -24,7 +24,7 @@ Route::middleware(['auth:sanctum', 'ability:user,admin'])->group(function (){
     Route::prefix('/collection')
         ->group(function (){
             Route::get('/', [CollectionController::class, 'index']);
-            Route::get('/{id}', [CollectionController::class, 'show']);
+            Route::get('/{id}', [CollectionController::class, 'show'])->name('collection.show');
         });
     Route::prefix('/question')
         ->group(function (){

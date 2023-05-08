@@ -7,6 +7,7 @@ use App\Models\Verification;
 use App\Services\BaseServices;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class VerifyEmail extends BaseServices
@@ -35,14 +36,16 @@ class VerifyEmail extends BaseServices
         } else {
             $createTime = $send['updated_at'];
             if($nowTime > $createTime){
+                $attempt++;
                 $send->update([
+                    'attempt' => $attempt,
                     'status' => 'time over',
                 ]);
                 return response([
                     'message' => 'your code time over , please reset send code',
                 ]);
             }else {
-                if ($code) {
+                if (Hash::check($data['code'], $send['code'])) {
                     $attempt++;
                     $send->update([
                         'attempt' => $attempt,
