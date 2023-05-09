@@ -14,8 +14,11 @@ class QuestionResource extends JsonResource
             'id'=> $this->id,
             'question'=> $this->question,
             'correct_answers'=> $this->correct_answers,
-            'answers'=> AnswerResource::collection($this->answers),
-            'created_at'=> $this->created_at->format('Y-m-d H:i:s'),
+            $this->mergeWhen($request->routeIs('question.show'), [
+                'answers' =>AnswerResource::collection($this->whenLoaded('answers')),
+            ]),
+            'created_at'=> $this->created_at?->format('Y-m-d H:i:s'),
+            'deleted_at' => $this->deleted_at?->format('Y-m-d H:i:s'),
         ];
     }
 }

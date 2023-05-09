@@ -8,8 +8,18 @@ use Illuminate\Database\Eloquent\Collection;
 
 class IndexQuestion extends BaseServices
 {
-    public function execute(): Collection
+    public function rules(): array
     {
-       return Question::all('id', 'question', 'created_at');
+        return [
+            'search' => 'nullable',
+        ];
+    }
+
+    public function execute(array $data)
+    {
+       $this->validate($data);
+        return Question::with('collection')->when($data['search'] ?? null, function ($query, $search) {
+            $query->search($search);
+        })->paginate(10);
     }
 }

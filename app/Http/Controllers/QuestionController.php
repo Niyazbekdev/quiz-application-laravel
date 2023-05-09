@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Question\QuestionCollection;
 use App\Http\Resources\Question\QuestionResource;
-use App\Http\Resources\Question\QuestionWithAnswers;
 use App\Services\Question\DeleteQuestion;
 use App\Services\Question\IndexQuestion;
 use App\Services\Question\ShowQuestion;
@@ -22,17 +22,19 @@ class QuestionController extends Controller
     public function index(Request $request)
     {
         try {
-            return app(IndexQuestion::class)->execute($request->all());
-        }catch (ValidationException $exception){
-             return $this->respondValidatorFailed($exception->validator);
+            $question = app(IndexQuestion::class)->execute($request->all());
+            return new QuestionCollection($question);
+        } catch (ValidationException $exception) {
+            return $this->respondValidatorFailed($exception->validator);
         }
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         try {
             app(StoreQuestion::class)->execute($request->all());
             return $this->respondSuccess();
-        }catch (ValidationException $exception) {
+        } catch (ValidationException $exception) {
             return $this->respondValidatorFailed($exception->validator);
         }
     }
@@ -40,15 +42,15 @@ class QuestionController extends Controller
     public function show(Request $request, string $id)
     {
         try {
-            [$question, $answers] =  app(ShowQuestion::class)->execute([
+            [$question, $answers] = app(ShowQuestion::class)->execute([
                 'id' => $id,
             ]);
-            return (new QuestionWithAnswers($question))->setAnswers($answers);
-        }catch (ValidationException $exception){
+            return new QuestionResource($question);
+        } catch (ValidationException $exception) {
             return $this->respondValidatorFailed($exception->validator);
-        }catch (ModelNotFoundException){
+        } catch (ModelNotFoundException) {
             return $this->respondNotFound();
-        }catch (Exception $exception){
+        } catch (Exception $exception) {
             $this->setHTTPStatusCode($exception->getCode());
             return $this->respondWithError($exception->getMessage());
         }
@@ -62,11 +64,11 @@ class QuestionController extends Controller
                 'question' => $request->question,
             ]);
             return $this->respondSuccess();
-        }catch (ValidationException $exception){
+        } catch (ValidationException $exception) {
             return $this->respondValidatorFailed($exception->validator);
-        }catch (ModelNotFoundException){
+        } catch (ModelNotFoundException) {
             return $this->respondNotFound();
-        }catch (Exception $exception){
+        } catch (Exception $exception) {
             $this->setHTTPStatusCode($exception->getCode());
             return $this->respondWithError($exception->getMessage());
         }
@@ -79,11 +81,11 @@ class QuestionController extends Controller
                 'id' => $id,
             ]);
             return $this->respondSuccess();
-        }catch (ValidationException $exception){
+        } catch (ValidationException $exception) {
             return $this->respondValidatorFailed($exception->validator);
-        }catch (ModelNotFoundException){
+        } catch (ModelNotFoundException) {
             return $this->respondNotFound();
-        }catch (Exception $exception){
+        } catch (Exception $exception) {
             $this->setHTTPStatusCode($exception->getCode());
             return $this->respondWithError($exception->getMessage());
         }

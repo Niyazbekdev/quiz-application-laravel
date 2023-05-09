@@ -1,6 +1,6 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Http\Resources\Question;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -12,9 +12,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
  * @method lastPage()
  */
 
-class {{ class }} extends ResourceCollection
+class QuestionCollection extends ResourceCollection
 {
-
     public function toArray(Request $request): array
     {
         return [

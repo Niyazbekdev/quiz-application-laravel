@@ -29,7 +29,7 @@ Route::middleware(['auth:sanctum', 'ability:user,admin'])->group(function (){
     Route::prefix('/question')
         ->group(function (){
             Route::get('/', [QuestionController::class, 'index']);
-            Route::get('/{id}', [QuestionController::class, 'show']);
+            Route::get('/{id}', [QuestionController::class, 'show'])->name('question.show');
         });
     Route::prefix('/answers')
         ->group(function (){

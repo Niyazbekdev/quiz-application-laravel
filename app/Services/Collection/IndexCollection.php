@@ -23,6 +23,6 @@ class IndexCollection extends BaseServices
         $this->validate($data);
         return Collection::with('user')->when($data['search'] ?? null, function ($query, $search) {
             $query->search($search);
-        })->paginate(15);
+        })->paginate(10);
     }
 }
