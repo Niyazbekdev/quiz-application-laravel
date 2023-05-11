@@ -9,13 +9,22 @@ use Illuminate\Validation\ValidationException;
 
 class IndexAnswer extends BaseServices
 {
+    public function rules(): array
+    {
+        return [
+          'search' => 'nullable',
+        ];
+    }
+
     /**
      * @throws ValidationException
      */
 
-   public function execute(array $data): Collection
+   public function execute(array $data)
    {
        $this->validate($data);
-       return Answer::all('id', 'question_id', 'answer', 'is_correct');
+       return Answer::with('question')->when($data['search'] ?? null, function ($query, $search){
+            $query->search($search);
+       })->paginate(10);
    }
 }

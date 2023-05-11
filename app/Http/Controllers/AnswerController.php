@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Answer\AnswerAnswer;
+use App\Http\Resources\Answer\AnswerCollection;
 use App\Http\Resources\Answer\AnswerResource;
 use App\Services\Answers\DeleteAnswer;
 use App\Services\Answers\IndexAnswer;
@@ -23,7 +23,7 @@ class AnswerController extends Controller
     {
         try {
             $answer = app(IndexAnswer::class)->execute($request->all());
-            return AnswerAnswer::collection($answer);
+            return new AnswerCollection($answer);
         } catch (ValidationException $exception) {
             return $this->respondValidatorFailed($exception->validator);
         }
@@ -45,7 +45,7 @@ class AnswerController extends Controller
             $answer = app(ShowAnswer::class)->execute([
                 'id' => $id,
             ]);
-            return new AnswerAnswer($answer);
+            return new AnswerResource($answer);
         }catch (ValidationException $exception){
             return $this->respondValidatorFailed($exception->validator);
         }catch (ModelNotFoundException){
