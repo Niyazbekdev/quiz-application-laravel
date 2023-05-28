@@ -4,6 +4,7 @@ use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -28,14 +29,11 @@ Route::middleware(['auth:sanctum', 'ability:user,admin'])->group(function (){
         });
     Route::prefix('/question')
         ->group(function (){
-            Route::get('/', [QuestionController::class, 'index']);
-            Route::get('/{id}', [QuestionController::class, 'show'])->name('question.show');
+            Route::post('/', [QuestionController::class, 'store']);
+            Route::put('/{id}', [QuestionController::class, 'update']);
+            Route::delete('/{id}', [QuestionController::class, 'destroy']);
         });
-    Route::prefix('/answers')
-        ->group(function (){
-            Route::get('/', [AnswerController::class, 'index']);
-            Route::get('/{id}', [AnswerController::class, 'show']);
-        });
+    Route::post('/results/{col_id}/{ques_id}', [ResultController::class, 'store']);
 });
 Route::middleware(['auth:sanctum', 'ability:admin'])->group(function (){
     Route::get('/', [UserController::class, 'getMe']);
@@ -50,17 +48,5 @@ Route::middleware(['auth:sanctum', 'ability:admin'])->group(function (){
             Route::post('/', [CollectionController::class, 'store']);
             Route::put('/{id}', [CollectionController::class, 'update']);
             Route::delete('/{id}', [CollectionController::class, 'destroy']);
-        });
-    Route::prefix('/question')
-        ->group(function (){
-            Route::post('/', [QuestionController::class, 'store']);
-            Route::put('/{id}', [QuestionController::class, 'update']);
-            Route::delete('/{id}', [QuestionController::class, 'destroy']);
-        });
-    Route::prefix('/answers')
-        ->group(function (){
-            Route::post('/', [AnswerController::class, 'store']);
-            Route::put('/{id}', [AnswerController::class, 'update']);
-            Route::delete('/{id}', [AnswerController::class, 'destroy']);
         });
 });
