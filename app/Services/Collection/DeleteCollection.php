@@ -6,6 +6,7 @@ use App\Models\Answer;
 use App\Models\Collection;
 use App\Models\Question;
 use App\Services\BaseServices;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 
 class DeleteCollection extends BaseServices
@@ -19,6 +20,7 @@ class DeleteCollection extends BaseServices
 
     /**
      * @throws ValidationException
+     * @throws ModelNotFoundException
      */
     public function execute(array $data): bool
     {

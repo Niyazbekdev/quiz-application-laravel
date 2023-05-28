@@ -4,6 +4,7 @@ namespace App\Services\Collection;
 
 use App\Models\Collection;
 use App\Services\BaseServices;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 
 class UpdateCollection extends BaseServices
@@ -19,6 +20,7 @@ class UpdateCollection extends BaseServices
 
     /**
      * @throws ValidationException
+     * @throws ModelNotFoundException
      */
     public function execute(array $data): Collection
     {

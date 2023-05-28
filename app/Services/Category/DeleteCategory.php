@@ -4,6 +4,7 @@ namespace App\Services\Category;
 
 use App\Models\Category;
 use App\Services\BaseServices;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 
 class DeleteCategory extends BaseServices
@@ -17,6 +18,7 @@ class DeleteCategory extends BaseServices
 
     /**
      * @throws ValidationException
+     * @throws ModelNotFoundException
      */
     public function execute(array $data):Category
     {
