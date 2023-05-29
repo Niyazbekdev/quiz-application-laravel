@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Resutl;
+namespace App\Services\Result;
 
 use App\Models\Answer;
 use App\Models\Result;

@@ -49,4 +49,5 @@ Route::middleware(['auth:sanctum', 'ability:admin'])->group(function (){
             Route::put('/{id}', [CollectionController::class, 'update']);
             Route::delete('/{id}', [CollectionController::class, 'destroy']);
         });
+    Route::get('/results/', [ResultController::class, 'index']);
 });

@@ -19,16 +19,6 @@ class QuestionController extends Controller
 {
     use JsonRespondController;
 
-    public function index(Request $request)
-    {
-        try {
-            $question = app(IndexQuestion::class)->execute($request->all());
-            return new QuestionCollection($question);
-        } catch (ValidationException $exception) {
-            return $this->respondValidatorFailed($exception->validator);
-        }
-    }
-
     public function store(Request $request)
     {
         try {
@@ -36,23 +26,6 @@ class QuestionController extends Controller
             return $this->respondSuccess();
         } catch (ValidationException $exception) {
             return $this->respondValidatorFailed($exception->validator);
-        }
-    }
-
-    public function show(Request $request, string $id)
-    {
-        try {
-            [$question, $answers] = app(ShowQuestion::class)->execute([
-                'id' => $id,
-            ]);
-            return new QuestionResource($question);
-        } catch (ValidationException $exception) {
-            return $this->respondValidatorFailed($exception->validator);
-        } catch (ModelNotFoundException) {
-            return $this->respondNotFound();
-        } catch (Exception $exception) {
-            $this->setHTTPStatusCode($exception->getCode());
-            return $this->respondWithError($exception->getMessage());
         }
     }
 
@@ -73,7 +46,6 @@ class QuestionController extends Controller
             return $this->respondWithError($exception->getMessage());
         }
     }
-
     public function destroy(Request $request, string $id)
     {
         try {

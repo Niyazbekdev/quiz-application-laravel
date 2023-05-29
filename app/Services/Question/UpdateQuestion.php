@@ -5,6 +5,7 @@ namespace App\Services\Question;
 use App\Models\Answer;
 use App\Models\Question;
 use App\Services\BaseServices;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -29,20 +30,25 @@ class UpdateQuestion extends BaseServices
    public function execute(array $data): bool
    {
        $this->validate($data);
-       $question = Question::find($data['id']);
+       $question = Question::findOrFail($data['id']);
+       $oldAnswers = $question->answers->pluck('answers');
+       $answers = collect($question['answers']);
+
        $question->update([
            'question' => $data['question'],
+           'correct_answers' => $answers->where('is_correct', true)->count(),
        ]);
-       $answers = Answer::where('question_id', $data['id'])->get();
-       foreach ($answers as $answer) {
-           Answer::find($answer['id'])->delete();
+       foreach ($answers as $answer){
+           if(in_array($answer['answer'], $oldAnswers)){
+               $this->$answers[] = [
+                   'question_id' => $question->id,
+                   'answer' => $answer['answer'],
+                   'is_correct' => $answer['is_correct']
+               ];
+           }
        }
-       foreach ($data['answers'] as $answer){
-           $answer = Answer::create([
-               'question_id' => $data['id'],
-               'answer' => $answer['answer'],
-               'is_correct' => $answer['is_correct'],
-           ]);
+       if(!empty($this->answers)){
+           DB::table('answers')->insert($this->answers);
        }
        return true;
    }

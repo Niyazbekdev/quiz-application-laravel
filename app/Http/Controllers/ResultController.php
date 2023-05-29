@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Resutl\StoreResult;
+use App\Services\Result\IndexResult;
+use App\Services\Result\StoreResult;
 use App\Traits\JsonRespondController;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -10,9 +11,18 @@ use Illuminate\Validation\ValidationException;
 class ResultController extends Controller
 {
     use JsonRespondController;
-    public function index()
+    public function index(Request $request)
     {
-        //
+        try{
+            return app(IndexResult::class)->execute([
+                'collection_id' => $request->collection_id,
+                'question_id' => $request->question_id,
+                'answer_id' => $request->answer_id,
+                'is_correct' => $request->is_correct,
+            ]);
+        }catch(ValidationException $exception){
+            return $this->respondValidatorFailed($exception->validator);
+        }
     }
 
     public function store(Request $request, string $collection_id, string $question_id)
