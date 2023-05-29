@@ -2,9 +2,9 @@
 
 namespace App\Services\Answers;
 
-use App\Http\Resources\Answer\AnswerAnswer;
 use App\Models\Answer;
 use App\Services\BaseServices;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 
 class DeleteAnswer extends BaseServices
@@ -18,12 +18,13 @@ class DeleteAnswer extends BaseServices
 
     /**
      * @throws ValidationException
+     * @throws ModelNotFoundException
      */
 
    public function execute(array $data): bool
    {
        $this->validate($data);
-       Answer::find($data['id'])->delete();
+       Answer::findOrFail($data['id'])->delete();
        return true;
    }
 }

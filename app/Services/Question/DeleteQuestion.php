@@ -5,6 +5,7 @@ namespace App\Services\Question;
 use App\Models\Answer;
 use App\Models\Question;
 use App\Services\BaseServices;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 
 class DeleteQuestion extends BaseServices
@@ -18,6 +19,7 @@ class DeleteQuestion extends BaseServices
 
     /**
      * @throws ValidationException
+     * @throws ModelNotFoundException
      */
 
    public function execute(array $data): bool

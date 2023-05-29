@@ -55,9 +55,7 @@ class CategoryController extends Controller
                 'id' => $id,
                 'name' => $request->name,
             ]);
-            return response([
-                'successful' => true,
-            ]);
+            return $this->respondSuccess();
         }catch (ValidationException $exception){
             return $exception->validator->errors()->all();
         }
@@ -68,9 +66,7 @@ class CategoryController extends Controller
             $category = app(DeleteCategory::class)->execute([
                 'id' => $id,
             ]);
-            return response([
-                'successful' => true,
-            ]);
+            return $this->respondSuccess();
         }catch (ValidationException $exception){
             return $exception->validator->errors()->all();
         }

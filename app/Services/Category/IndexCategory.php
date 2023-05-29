@@ -9,10 +9,6 @@ use Illuminate\Validation\ValidationException;
 
 class IndexCategory extends BaseServices
 {
-    public function rules(): array
-    {
-        return [];
-    }
     public function execute(array $data): Collection
     {
         return Category::all(['id', 'name', 'created_at', 'updated_at']);

@@ -13,7 +13,6 @@ class ShowCategory extends BaseServices
     {
         return [
             'id' => 'exists:categories,id',
-            'name',
         ];
     }
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Result\IndexResult;
+use App\Services\Result\StatisticResult;
 use App\Services\Result\StoreResult;
 use App\Traits\JsonRespondController;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ class ResultController extends Controller
     public function index(Request $request)
     {
         try{
-            return app(IndexResult::class)->execute([
+            return app(StatisticResult::class)->execute([
                 'collection_id' => $request->collection_id,
                 'question_id' => $request->question_id,
                 'answer_id' => $request->answer_id,

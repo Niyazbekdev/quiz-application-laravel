@@ -6,7 +6,7 @@ use App\Models\Result;
 use App\Services\BaseServices;
 use Illuminate\Validation\ValidationException;
 
-class IndexResult extends BaseServices
+class StatisticResult extends BaseServices
 {
     public function rules(): array
     {

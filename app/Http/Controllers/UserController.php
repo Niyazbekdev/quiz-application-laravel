@@ -29,7 +29,6 @@ class UserController extends Controller
             ], 422);
         }
     }
-
     public function login(Request $request){
         try {
             [$user, $token, $role] = app(LoginUser::class)->execute($request->all());

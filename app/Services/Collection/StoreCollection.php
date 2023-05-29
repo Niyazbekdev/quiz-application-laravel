@@ -28,8 +28,6 @@ class StoreCollection extends BaseServices
             "allowed_users"=> "required_unless:allowed_type,public,url|array"
         ];
     }
-
-
     /**
      * @throws ValidationException
      */
